@@ -1,0 +1,150 @@
+import { compared, hashed } from "../helpers/authHelper.js";
+import userModel from "../models/users.js"
+import JWT from "jsonwebtoken";
+//REGISTER
+const registerController = async (req, res) => {
+    try {
+        const { name, email, password, phone, address, answer } = req.body
+        if (!name) {
+            return res.send({ message: "Enter Name" });
+        }
+        if (!email) {
+            return res.send({ message: "Enter Email" });
+        }
+        if (!password) {
+            return res.send({ message: "Enter Password" });
+        }
+        if (!phone) {
+            return res.send({ message: "Enter phone" });
+        }
+        if (!address) {
+            return res.send({ message: "Enter Address" });
+        }
+        if (!answer) {
+            return res.send({ message: "Enter Answer" });
+        }
+        //Checking for existing user
+        const exuser = await userModel.findOne({ email });
+
+        //validating with existing
+        if (exuser) {
+            res.status(200).send({
+                success: false,
+                message: "Already Registered"
+            })
+        }
+        //registering new user
+        const hashing = await hashed(password);
+        const user = await new userModel({ name, email, address, phone, password: hashing, answer }).save();
+        res.status(201).send({
+            success: true,
+            message: "registered Successfully",
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Not Registered",
+            error
+        })
+    }
+}
+
+
+//LOGIN 
+const loginController = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        //validation
+        if (!email || !password) {
+            return res.status(404).send({
+                success: false,
+                message: "Incorrect Details Entered"
+            })
+        }
+        const user = await userModel.findOne({ email })
+        if (!email) {
+            res.status(500).send({
+                success: false,
+                message: "User not Found"
+            })
+        }
+        const match = await compared(password, user.password)
+        if (!match) {
+            res.status(404).send({
+                success: false,
+                message: "Password Invalid"
+            })
+            return;
+        }
+        //JWT TOKEN
+        const token = JWT.sign({ _id: user._id }, "jkdfhajkhjklhnmzbnmcxb32749867hjak", {
+            expiresIn: "177d",
+        })
+        res.status(200).send({
+            success: true,
+            message: "logged in successfully",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+                roles: user.roles
+            },
+            token,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Login Failed",
+            error
+        })
+    }
+}
+
+//frgt passwrd
+const forgetPasswordController = async (req, res) => {
+    try {
+        const { email, answer, newPassword } = req.body
+        if (!email) {
+            res.status(400).send({ message: 'Email is Required' })
+        }
+        if (!answer) {
+            res.status(400).send({ message: 'answer is Required' })
+        }
+        if (!newPassword) {
+            res.status(400).send({ message: 'New Password is Required' })
+        }
+        const user = await userModel.findOne({ email, answer })
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'Something really went wrong buddy'
+            })
+        }
+        const hashe = await hashed(newPassword)
+        await userModel.findByIdAndUpdate(user._id, { password: hashe })
+        res.status(200).send({
+            success: true,
+            message: "Password Reset Successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went Wrong',
+            error
+        })
+    }
+}
+
+//LogInReq
+const testController = (req, res) => {
+    res.send("Hello")
+}
+
+
+export { registerController, loginController, testController, forgetPasswordController }
