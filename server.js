@@ -15,7 +15,7 @@ const app = Express();
 //config
 app.use(cors());
 app.use(Express.json());
-app.use(morgan('dev'))
+app.use(morgan("dev"))
 //api
 app.use('/api/v1/auth', router)
 app.use('/api/v1/category', categoryRoutes)
@@ -24,18 +24,6 @@ app.use('/api/v1/product',productRoutes)
 app.get('/', (req, res) => {
     res.send("<h1>Hello JI</h1>");
 })
-
-
-app.get("/asch", async (req, res) => {
-    const user = await userModel.find();
-    try {
-        res.json(user);
-    }
-    catch (error) {
-        res.json(error);
-    }
-})
-
 
 
 //server config

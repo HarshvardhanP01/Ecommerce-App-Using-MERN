@@ -6,11 +6,11 @@ import toast from "react-hot-toast"
 // import SearchInput from "../Form/SearchInput"; 
 import useCategory from "../../hooks/useCategory";
 import SearchInput from '../Forms/SearchInput'
-import  {useCart} from "../../context/cart"
-import {Badge} from "antd"
+import { useCart } from "../../context/cart"
+import { Badge } from "antd"
 const Header = () => {
   const [auth, setAuth] = useAuth()
-  const [cart]=useCart();
+  const [cart] = useCart();
   const categories = useCategory();
   const handleLogout = () => {
     setAuth({
@@ -92,9 +92,8 @@ const Header = () => {
                     <ul className="dropdown-menu">
                       <li>
                         <NavLink
-                          to={`/dashboard/${
-                            auth?.user?.roles === 1 ? "admin" : "user"
-                          }`}
+                          to={`/dashboard/${auth?.user?.roles === 1 ? "admin" : "user"
+                            }`}
                           className="dropdown-item"
                         >
                           Dashboard
