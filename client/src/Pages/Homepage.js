@@ -6,7 +6,8 @@ import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast"
-
+import { AiOutlineReload } from "react-icons/ai";
+import "../styles/Homepage.css"
 const Homepage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
