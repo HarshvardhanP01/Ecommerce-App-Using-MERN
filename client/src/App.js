@@ -15,14 +15,24 @@ import CreateCategory from "./Pages/Admin/CreateCategory";
 import CreateProduct from "./Pages/Admin/CreateProduct";
 import Orders from "./Pages/user/Orders";
 import Profile from "./Pages/user/Profile";
-import Users from './Pages/Admin/Users.js';
+import Users from './Pages/Admin/Users';
 import Products from "./Pages/Admin/Products";
 import UpdateProduct from "./Pages/Admin/UpdateProduct";
+import ProductDetails from "./Pages/ProductDetails";
+import Categories from "./Pages/Categories";
+import CategoryProduct from "./Pages/CategoryProduct";
+import Search from "./Pages/Search";
+import CartPage from "./Pages/CartPage";
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/category/:slug" element={<CategoryProduct />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
           <Route path="user/orders" element={<Orders />} />
