@@ -53,7 +53,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasssword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/policy" element={<Privacy />} />
         <Route path="/*" element={<Pagenotfound />} />
       </Routes>
     </>

@@ -1,3 +1,4 @@
+import "../styles/Homepagee.css"
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layouts/Layout";
 import axios from "axios";
@@ -7,7 +8,6 @@ import { Prices } from "../components/Prices";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast"
 import { AiOutlineReload } from "react-icons/ai";
-import "../styles/Homepage.css"
 const Homepage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
